@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Простой Чат-Бот</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .chat-box {
+      width: 360px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .header {
+      background: #A56BFF;
+      color: white;
+      padding: 14px;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    /* ===== Сұрақтар кнопкасы ===== */
+    .question-suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 10px;
+      background: #f3eaff;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .question-suggestions button {
+      background: #A56BFF;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .question-suggestions button:hover {
+      background: #8d54e6;
+    }
+
+    .messages {
+      padding: 12px;
+      height: 300px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .msg {
+      padding: 10px 12px;
+      border-radius: 10px;
+      max-width: 80%;
+      line-height: 1.3;
+      font-size: 14px;
+    }
+
+    .user { background: #A56BFF; color: white; align-self: flex-end; }
+    .bot  { background: #eee; color: #333; align-self: flex-start; }
+
+    .input-area {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+
+    input {
+      flex: 1;
+      border: none;
+      padding: 12px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    button.send-btn {
+      background: #A56BFF;
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-box">
+
+    <div class="header">Бот</div>
+
+    <!-- Готовые сұрақтар -->
+    <div class="question-suggestions">
+      <button onclick="quickAsk('Қызбен қайда баруға болады?')">Қызбен бару?</button>
+      <button onclick="quickAsk('Достармен қайда баруға болады?')">Достармен бару?</button>
+      <button onclick="quickAsk('Арзан варианттар бар ма?')">Арзан?</button>
+      <button onclick="quickAsk('Бюджет қанша болады?')">Бюджет?</button>
+      <button onclick="quickAsk('Түнде қайда баруға болады?')">Түнде бару?</button>
+    </div>
+
+    <div id="messages" class="messages"></div>
+
+    <div class="input-area">
+      <input id="inputMsg" placeholder="Напиши сообщение...">
+      <button class="send-btn" onclick="sendMessage()">OK</button>
+    </div>
+  </div>
+
+  <script>
+    const messages = document.getElementById('messages');
+
+    function addMessage(text, role) {
+      const div = document.createElement('div');
+      div.className = 'msg ' + role;
+      div.textContent = text;
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function quickAsk(question) {
+      addMessage(question, 'user');
+      setTimeout(() => {
+        addMessage(botReply(question), 'bot');
+      }, 200);
+    }
+
+    function botReply(text) {
+      text = text.toLowerCase();
+
+      // ---- Қызбен ----
+      if (text.includes("қызбен") || text.includes("девушк")) {
+        const arr = [
+          "Қызбен баруға: тыныш кофейня ☕",
+          "Парк → прогулка → фото 📸",
+          "Кино + түнгі қала 🌙",
+          "VR клуб / боулинг 🎳",
+          "Набережный → романтик 🌃"
+        ];
+        return arr[Math.floor(Math.random() * arr.length)];
+      }
+
+      // ---- Достармен ----
+      if (text.includes("дост") || text.includes("друз")) {
+        const arr = [
+          "Боулингке барыңдар 🎳",
+          "PlayStation клубта FIFA ойнаңдар 🎮",
+          "Настолка кафе → UNO / Mafia",
+          "Шаурма жеп отырып рофлить 😂",
+          "Кальянная (если уходите) 🔥"
+        ];
+        return arr[Math.floor(Math.random() * arr.length)];
+      }
+
+      // ---- Арзан ----
+      if (text.includes("арзан") || text.includes("деш")) {
+        const arr = [
+          "Паркта жүру — тегін 🌳",
+          "1 кофе екеуге — 1000₸ ☕",
+          "Балмұздақ — 500₸ 🍦",
+          "Набережный — тегін 🌃",
+          "Скамейкада отырып әңгіме — тегін ❤️"
+        ];
+        return arr[Math.floor(Math.random() * arr.length)];
+      }
+
+      // ---- Бюджет ----
+      if (text.includes("бюджет") || text.includes("канша") || text.includes("сколько")) {
+        return "Бюджет былай:\n• Арзан: 0–2000₸\n• Орта: 3000–7000₸\n• Свидание: 5k–15k₸\n• Қымбат: 20k₸+";
+      }
+
+      // ---- Түнде ----
+      if (text.includes("түн") || text.includes("ноч")) {
+        const arr = [
+          "Набережный → түнгі вид 🌃",
+          "24/7 кофейня → тыныш отырыс ☕",
+          "Машинада музыка тыңдап жүріп шығу 🚗",
+          "Тыныш районда серуен 🌙",
+          "Смотровая → жоғарыдан қарау ⭐"
+        ];
+        return arr[Math.floor(Math.random() * arr.length)];
+      }
+
+      // ---- Общий ----
+      if (text.includes("қайда") || text.includes("куда")) {
+        const arr = [
+          "Парк → кафе → гулять",
+          "Кинотеатр 🎬",
+          "VR клуб 🎮",
+          "Кофейня ☕",
+          "ТЦ ішінде жүріп шығу 🏬"
+        ];
+        return arr[Math.floor(Math.random() * arr.length)];
+      }
+
+      return "Түсінбедім тамыр, кішкене нақтырақ жаз 😁";
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('inputMsg');
+      const text = input.value.trim();
+      if (text === '') return;
+
+      addMessage(text, 'user');
+      input.value = '';
+
+      setTimeout(() => {
+        addMessage(botReply(text), 'bot');
+      }, 300);
+    }
+
+    document.getElementById('inputMsg').addEventListener('keydown', e => {
+      if (e.key === 'Enter') sendMessage();
+    });
+  </script>
+
+</body>
+</html>

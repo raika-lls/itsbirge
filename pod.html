@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Подписка</title>
+  <link rel="stylesheet" href="sub.css" />
+</head>
+<body style="font-family: Inter, sans-serif; background:#f7f5ff; margin:0; padding:40px; display:flex; justify-content:center;">
+  <style>
+    :root {
+      --accent:#A56BFF;
+      --card:#ffffff;
+      --text:#222;
+      --muted:#666;
+    }
+    .wrap{
+      max-width:900px;
+      width:100%;
+      background:var(--card);
+      padding:32px;
+      border-radius:20px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    }
+    h1{
+      margin-top:0;
+      margin-bottom:6px;
+      color:var(--accent);
+      font-size:32px;
+      font-weight:700;
+    }
+    .subtext{
+      margin-top:0;
+      color:var(--muted);
+      font-size:15px;
+    }
+    .plans{
+      display:flex;
+      gap:20px;
+      flex-wrap:wrap;
+      margin-top:28px;
+    }
+    .plan{
+      flex:1;
+      min-width:260px;
+      background:#faf8ff;
+      border:2px solid #e7dbff;
+      border-radius:18px;
+      padding:22px;
+      transition:0.25s;
+    }
+    .plan:hover{
+      transform:translateY(-4px);
+      box-shadow:0 8px 20px rgba(0,0,0,0.06);
+    }
+    .premium{
+      border-color:var(--accent);
+      background:#f3e9ff;
+    }
+    .price{
+      font-size:24px;
+      font-weight:700;
+      color:var(--accent);
+      margin-bottom:14px;
+    }
+    ul{
+      margin:10px 0 18px;
+      padding-left:20px;
+      color:var(--muted);
+      font-size:14px;
+    }
+    button{
+      width:100%;
+      padding:12px 0;
+      background:var(--accent);
+      color:white;
+      border:none;
+      border-radius:12px;
+      font-size:15px;
+      font-weight:600;
+      cursor:pointer;
+      transition:0.2s;
+    }
+    button:hover{
+      opacity:0.85;
+      transform:scale(1.02);
+    }
+    .qqq {
+      text-decoration: none;
+      color: white;
+    }
+  </style>
+  <div class="wrap">
+    <h1>Подписка</h1>
+    <p class="subtext">Выбери тариф — оплата через карту</p>
+
+    <div class="plans">
+      <div class="plan">
+        <h2>Базовая</h2>
+        <p class="desc">Жеңіл қолданушыларға</p>
+        <div class="price">1500 ₸ / месяц</div>
+        <ul>
+          <li>Доступ к основным функциям</li>
+          <li>1 устройство</li>
+          <li>Быстрая поддержка</li>
+        </ul>
+        <button onclick="subscribe('basic')"><a href="bnk.html" class="qqq">Оформить</a></button>
+      </div>
+
+      <div class="plan premium">
+        <h2>Премиум</h2>
+        <p class="desc">Full мүмкіндіктер</p>
+        <div class="price">3500 ₸ / месяц</div>
+        <ul>
+          <li>Все функции + бонусы</li>
+          <li>3 устройства</li>
+          <li>Приоритетная поддержка 24/7</li>
+        </ul>
+        <button onclick="subscribe('premium')"><a href="bnk.html" class="qqq">Оформить</a></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="sub.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #A56BFF;
+}
+
+.topbar {
+    width: 100%;
+    background: #111;
+    color: white;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.topbar .logo {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.menu a {
+    color: #ddd;
+    margin-left: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.menu a:hover {
+    color: white;
+}
+
+.profile-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 40px auto;
+    display: flex;
+    gap: 25px;
+}
+
+.profile-card {
+    width: 250px;
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: #ccc;
+    object-fit: cover;
+}
+
+.name {
+    margin: 15px 0 5px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.role {
+    color: gray;
+    margin-bottom: 10px;
+}
+
+.info-block {
+    flex: 1;
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.info-block h3 {
+    margin-top: 0;
+}

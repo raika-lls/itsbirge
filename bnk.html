@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Быстрая оплата — Одностраничный сайт</title>
+  <style>
+   
+    :root{ --accent: #A56BFF; --bg: #f7f7fb; --card: #ffffff; --muted: #6b6b7a; }
+    *{box-sizing:border-box}
+    body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:linear-gradient(180deg, #ffffff 0%, var(--bg) 100%); color:#111}
+
+    .wrap{max-width:920px; margin:48px auto; padding:24px}
+    .pay-card{background:var(--card); border-radius:14px; box-shadow:0 6px 30px rgba(16,24,40,0.08); padding:28px; display:grid; grid-template-columns: 1fr 360px; gap:24px}
+
+    header h1{margin:0;font-size:20px}
+    header p{margin:6px 0 0;color:var(--muted);font-size:14px}
+
+    
+    .info{padding:6px 0}
+    .info .label{font-size:13px;color:var(--muted); margin-bottom:6px}
+
+  
+    form{display:flex;flex-direction:column;gap:12px}
+    .row{display:flex;gap:12px}
+    .field{display:flex;flex-direction:column}
+    label{font-size:13px;color:var(--muted);margin-bottom:6px}
+    input[type=text], input[type=number], input[type=tel]{padding:12px 14px;border-radius:10px;border:1px solid #e6e6ef;font-size:15px}
+    input:focus{outline:none; box-shadow:0 0 0 4px rgba(165,107,255,0.12); border-color:var(--accent)}
+
+    .small{width:100%}
+    .half{flex:1}
+
+   
+    .preview{background: linear-gradient(135deg, var(--accent), #6f42ff); border-radius:12px; color:white; padding:18px; display:flex;flex-direction:column; justify-content:space-between}
+    .chip{width:48px;height:34px;background:rgba(255,255,255,0.25);border-radius:6px}
+    .card-num{letter-spacing:2px; font-weight:600; margin-top:18px}
+    .card-meta{display:flex;justify-content:space-between;margin-top:12px;font-size:13px;opacity:0.95}
+
+    .pay-btn{background:var(--accent); color:white; border:none; padding:12px 16px; border-radius:10px; font-weight:600; cursor:pointer; font-size:15px}
+    .pay-btn:active{transform:translateY(1px)}
+
+    .note{font-size:13px;color:var(--muted)}
+
+   
+    .toast{position:fixed; right:20px; bottom:20px; background:#111; color:white; padding:12px 16px; border-radius:10px; opacity:0; transform:translateY(10px); transition:all .22s ease; pointer-events:none}
+    .toast.show{opacity:1; transform:translateY(0); pointer-events:auto}
+
+  
+    @media (max-width:880px){
+      .pay-card{grid-template-columns:1fr;}
+      .preview{order:-1}
+    }
+
+   
+    .muted{color:var(--muted);font-size:13px}
+    .success{background:#e8f7ef;border-left:4px solid #2fb47a;padding:10px;border-radius:8px}
+    .btn {
+
+    }
+    .btn {
+      border-radius: 10px;
+      border: none;
+       position: absolute;
+        left: 20px;
+      top: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      background: #A56BFF;
+      padding: 8px 14px;
+    }
+    .aa {
+      color: white;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <button class="btn" onclick="history.back()"><a href="Cash.html" class="aa">← Назад</a></button>
+  </header>
+
+
+  <div class="wrap">
+    <div class="pay-card">
+      <div>
+        <header>
+          <h1>Оплата — Перевод с карты на карту</h1>
+          <p>Простая и быстрая оплата. Введи данные карты и сумму — это демонстрационный пример.</p>
+        </header>
+
+        <section class="info">
+          <form id="payForm" autocomplete="off">
+            <div class="field">
+              <label for="cardName">Имя на карте</label>
+              <input id="cardName" type="text" placeholder="IVAN IVANOV" required>
+            </div>
+
+            <div class="field">
+              <label for="cardNumber">Номер карты</label>
+              <input id="cardNumber" type="tel" inputmode="numeric" maxlength="19" placeholder="1234 5678 9012 3456" required>
+            </div>
+
+            <div class="row">
+              <div class="field half">
+                <label for="exp">Срок (MM/YY)</label>
+                <input id="exp" type="text" maxlength="5" placeholder="08/26" required>
+              </div>
+              <div class="field half">
+                <label for="cvc">CVC</label>
+                <input id="cvc" type="text" maxlength="4" placeholder="123" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="amount">Сумма (списание с карты)</label>
+              <input id="amount" type="number" min="1" step="0.01" placeholder="1000.00" required>
+            </div>
+
+            <div style="display:flex;gap:12px;align-items:center;margin-top:6px">
+              <button class="pay-btn" type="submit">Оплатить</button>
+              <div class="note">Безопасно • Демонстрация</div>
+            </div>
+          </form>
+
+          <div id="result" style="margin-top:12px"></div>
+        </section>
+      </div>
+
+      <aside class="preview" aria-hidden="true">
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="chip"></div>
+            <div style="font-size:12px;opacity:0.95">VISA • Mastercard</div>
+          </div>
+
+          <div class="card-num" id="pvNumber">•••• •••• •••• ••••</div>
+          <div class="card-meta">
+            <div id="pvName">CARDHOLDER</div>
+            <div id="pvExp">MM/YY</div>
+          </div>
+        </div>
+
+        <div style="margin-top:18px">
+          <div class="muted">Сумма</div>
+          <div style="font-weight:700;font-size:18px" id="pvAmount">—</div>
+        </div>
+      </aside>
+
+    </div>
+
+    <p style="margin-top:18px; color:var(--muted)">Примечание: этот шаблон — фронтенд-демонстрация. Для реальных платежей подключи платёжный шлюз (Stripe, Iyzico, PayU и т.д.) и не храни данные карт на своём сервере без PCI DSS.</p>
+  </div>
+
+  <div class="toast" id="toast">Успешно — платёж завершён (демо)</div>
+
+  <script>
+   
+    const cardNumber = document.getElementById('cardNumber');
+    const cardName = document.getElementById('cardName');
+    const exp = document.getElementById('exp');
+    const cvc = document.getElementById('cvc');
+    const amount = document.getElementById('amount');
+
+    const pvNumber = document.getElementById('pvNumber');
+    const pvName = document.getElementById('pvName');
+    const pvExp = document.getElementById('pvExp');
+    const pvAmount = document.getElementById('pvAmount');
+    const toast = document.getElementById('toast');
+    const result = document.getElementById('result');
+
+  
+    cardNumber.addEventListener('input', (e)=>{
+      let v = e.target.value.replace(/\D/g,'').slice(0,16);
+      const parts = [];
+      for(let i=0;i<v.length;i+=4) parts.push(v.slice(i,i+4));
+      e.target.value = parts.join(' ');
+      pvNumber.textContent = parts.length ? parts.join(' ') : '•••• •••• •••• ••••';
+    });
+
+    cardName.addEventListener('input', (e)=>{ pvName.textContent = e.target.value.toUpperCase() || 'CARDHOLDER'; });
+
+    exp.addEventListener('input', (e)=>{
+      let v = e.target.value.replace(/\D/g,'').slice(0,4);
+      if(v.length>2) v = v.slice(0,2) + '/' + v.slice(2);
+      e.target.value = v;
+      pvExp.textContent = v || 'MM/YY';
+    });
+
+    amount.addEventListener('input', ()=>{ pvAmount.textContent = amount.value ? (Number(amount.value).toFixed(2) + ' KZT') : '—'; });
+
+ 
+    document.getElementById('payForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      
+      const num = cardNumber.value.replace(/\s/g,'');
+      if(num.length < 13){ showResult('error','Неверный номер карты'); return; }
+      if(!/^\d{2}\/\d{2}$/.test(exp.value)){ showResult('error','Неверный срок'); return; }
+      if(cvc.value.length < 3){ showResult('error','Неверный CVC'); return; }
+      if(!amount.value || Number(amount.value) <= 0){ showResult('error','Неверная сумма'); return; }
+
+    
+      showToast('Успешно — платёж завершён (демо)');
+      showResult('success','Платёж обработан (демо). Для интеграции подключи платёжный шлюз.');
+    });
+
+    function showToast(text){ toast.textContent = text; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),3500); }
+    function showResult(type, text){ result.innerHTML = type==='success' ? `<div class="success">${text}</div>` : `<div style="color:#8b0000">${text}</div>` }
+
+    
+  </script>
+</body>
+</html>
